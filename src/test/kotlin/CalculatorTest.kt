@@ -1,7 +1,8 @@
-import mathematicalSymbols.Operator
-import mathematicalSymbols.Operand
+
 import mathematicalSymbols.ArithmeticalElement
-import org.junit.jupiter.api.Assertions.*
+import mathematicalSymbols.Operand
+import mathematicalSymbols.OperatorSymbol
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -12,15 +13,15 @@ class CalculatorTest{
     fun setUp(){
         defaultOperation = listOf(
             Operand(3.0),
-            Operator.ADDITION,
+            OperatorSymbol.ADDITION,
             Operand(-8.00),
-            Operator.MULTIPLICATION,
+            OperatorSymbol.MULTIPLICATION,
             Operand(1.0),
-            Operator.SUBTRACTION,
+            OperatorSymbol.SUBTRACTION,
             Operand(2.0),
-            Operator.DIVISION,
+            OperatorSymbol.DIVISION,
             Operand(3.0),
-            Operator.MULTIPLICATION,
+            OperatorSymbol.MULTIPLICATION,
             Operand(5.0),
         )
     }
@@ -29,29 +30,29 @@ class CalculatorTest{
         val functionToTest = classToTest::calculate
         val inputList = listOf<ArithmeticalElement>(
             Operand(3.0),
-            Operator.ADDITION,
+            OperatorSymbol.ADDITION,
             Operand(-8.00),
-            Operator.MULTIPLICATION,
+            OperatorSymbol.MULTIPLICATION,
             Operand(1.0),
-            Operator.SUBTRACTION,
+            OperatorSymbol.SUBTRACTION,
             Operand(2.0),
-            Operator.DIVISION,
+            OperatorSymbol.DIVISION,
             Operand(3.0),
-            Operator.MULTIPLICATION,
+            OperatorSymbol.MULTIPLICATION,
             Operand(5.0),
-            Operator.MULTIPLICATION,
+            OperatorSymbol.MULTIPLICATION,
             Operand(99.0),
-            Operator.DIVISION,
+            OperatorSymbol.DIVISION,
             Operand(51.23333339),
-            Operator.MULTIPLICATION,
+            OperatorSymbol.MULTIPLICATION,
             Operand(6563.435453),
-            Operator.SUBTRACTION,
+            OperatorSymbol.SUBTRACTION,
             Operand(-1.0),
-            Operator.MULTIPLICATION,
+            OperatorSymbol.MULTIPLICATION,
             Operand(21.15),
-            Operator.ADDITION,
+            OperatorSymbol.ADDITION,
             Operand(5435.45),
-            Operator.ADDITION,
+            OperatorSymbol.ADDITION,
             Operand(5463543.43543244),
         )
         val expectedResultList = listOf<ArithmeticalElement>(

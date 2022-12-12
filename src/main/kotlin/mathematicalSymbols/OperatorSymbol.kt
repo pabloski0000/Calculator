@@ -1,6 +1,6 @@
 package mathematicalSymbols
 
-enum class Operator: ArithmeticalElement {
+enum class OperatorSymbol: ArithmeticalElement {
     ADDITION,
     SUBTRACTION,
     MULTIPLICATION,

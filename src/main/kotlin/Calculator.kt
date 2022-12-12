@@ -1,7 +1,7 @@
-import mathematicalSymbols.Operator
-import mathematicalSymbols.Operand
+
 import mathematicalSymbols.ArithmeticalElement
-import java.lang.RuntimeException
+import mathematicalSymbols.Operand
+import mathematicalSymbols.OperatorSymbol
 
 class Calculator {
     fun calculate(operation: List<ArithmeticalElement>): List<ArithmeticalElement>{
@@ -14,11 +14,11 @@ class Calculator {
             secondOperand = operationElements[whileCursor + 1] as Operand
             var multiplicationOrDivisionDone = false
             multiplicationOrDivisionDone = when(operationElements[whileCursor]){
-                Operator.MULTIPLICATION -> {
+                OperatorSymbol.MULTIPLICATION -> {
                     firstOperand = Operand(firstOperand.toDouble() * secondOperand.toDouble())
                     true
                 }
-                Operator.DIVISION -> {
+                OperatorSymbol.DIVISION -> {
                     firstOperand = Operand(firstOperand.toDouble() / secondOperand.toDouble())
                     true
                 }
@@ -37,8 +37,8 @@ class Calculator {
                 firstOperand = operationElements[index - 1] as Operand
             secondOperand = operationElements[index + 1] as Operand
             firstOperand = when(operationElements[index]){
-                Operator.ADDITION -> Operand(firstOperand.toDouble() + secondOperand.toDouble())
-                Operator.SUBTRACTION -> Operand(firstOperand.toDouble() - secondOperand.toDouble())
+                OperatorSymbol.ADDITION -> Operand(firstOperand.toDouble() + secondOperand.toDouble())
+                OperatorSymbol.SUBTRACTION -> Operand(firstOperand.toDouble() - secondOperand.toDouble())
                 else -> throw RuntimeException("Unrecognised opertor symbol")
             }
         }

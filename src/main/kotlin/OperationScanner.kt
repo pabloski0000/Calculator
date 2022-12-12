@@ -1,8 +1,6 @@
-import java.lang.RuntimeException
-
 class OperationScanner(
     operation: String,
-    private val validOperators: List<String>
+    private val validOperators: List<String> = listOf("+", "-", "*", "/")
 ) {
     private val operation: String
     private var cursor: Int = 0
