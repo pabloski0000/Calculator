@@ -1,37 +1,37 @@
-import mathematicalSymbols.ArithmeticalSymbol
-import mathematicalSymbols.NumberSymbol
-import mathematicalSymbols.TypeOfOperator
+import mathematicalSymbols.ArithmeticalElement
+import mathematicalSymbols.Operand
+import mathematicalSymbols.Operator
 import java.lang.RuntimeException
 import java.util.*
 
 fun calculateStringOperation(operation: String): Double {
-    val operationList: List<ArithmeticalSymbol> = parseStringOperationToListOperation(operation)
-    val operationListCalculated: List<ArithmeticalSymbol> = Calculator().calculate(operationList)
-    val result = operationListCalculated[0] as NumberSymbol
-    return result.value
+    val operationList: List<ArithmeticalElement> = parseStringOperationToListOperation(operation)
+    val operationListCalculated: List<ArithmeticalElement> = Calculator().calculate(operationList)
+    val result = operationListCalculated[0] as Operand
+    return result.toDouble()
 }
 
-fun parseStringOperationToListOperation(stringOperation: String): List<ArithmeticalSymbol>{
+fun parseStringOperationToListOperation(stringOperation: String): List<ArithmeticalElement>{
+    val validOperatorCharacters = listOf("+", "-", "*", "/")
     if(stringOperation.isBlank())
         return emptyList()
-    val operationList: MutableList<ArithmeticalSymbol> = mutableListOf()
-    val scanner: Scanner = Scanner(stringOperation.trim())
-    scanner.useLocale(Locale.UK)
-    val parseOperandToNumberSymbol = {operand: Double -> NumberSymbol(operand)}
-    val parseOperatorSymbolToTypeOfOperator = { operator: String -> when(operator){
-        "+" -> TypeOfOperator.ADDITION
-        "-" -> TypeOfOperator.SUBTRACTION
-        "*" -> TypeOfOperator.MULTIPLICATION
-        "/" -> TypeOfOperator.DIVISION
+    val operationList: MutableList<ArithmeticalElement> = mutableListOf()
+    val scanner: OperationScanner = OperationScanner(stringOperation, validOperatorCharacters)
+    val adaptOperand = { operand: Double -> Operand(operand)}
+    val adaptOperator = { operator: String -> when(operator){
+        "+" -> Operator.ADDITION
+        "-" -> Operator.SUBTRACTION
+        "*" -> Operator.MULTIPLICATION
+        "/" -> Operator.DIVISION
         else -> throw RuntimeException("Type of operator not recognised")
     }}
     val firstOperand: Double = scanner.nextDouble()
-    operationList.add(parseOperandToNumberSymbol(firstOperand))
+    operationList.add(adaptOperand(firstOperand))
     while (scanner.hasNext()){
-        val operatorSymbol: String = scanner.next()
+        val operatorSymbol: String = scanner.nextOperatorSymbol()
         val secondOperand: Double = scanner.nextDouble()
-        operationList.add(parseOperatorSymbolToTypeOfOperator(operatorSymbol))
-        operationList.add(parseOperandToNumberSymbol(secondOperand))
+        operationList.add(adaptOperator(operatorSymbol))
+        operationList.add(adaptOperand(secondOperand))
     }
     return operationList
 }

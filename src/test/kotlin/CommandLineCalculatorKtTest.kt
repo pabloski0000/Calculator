@@ -1,6 +1,6 @@
-import mathematicalSymbols.ArithmeticalSymbol
-import mathematicalSymbols.NumberSymbol
-import mathematicalSymbols.TypeOfOperator
+import mathematicalSymbols.ArithmeticalElement
+import mathematicalSymbols.Operand
+import mathematicalSymbols.Operator
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -9,41 +9,41 @@ class CommandLineCalculatorKtTest{
     fun parseStringOperationToListOperationTest(){
         val functionToTest = ::parseStringOperationToListOperation
         val emptyString = ""
-        val emptyListOperation: List<ArithmeticalSymbol> = emptyList()
+        val emptyListOperation: List<ArithmeticalElement> = emptyList()
         val blankString = "     "
         val stringWithOneNumber = "1"
-        val expectedListWhenOneNumber = listOf<ArithmeticalSymbol>(
-            NumberSymbol(stringWithOneNumber.toDouble())
+        val expectedListWhenOneNumber = listOf<ArithmeticalElement>(
+            Operand(stringWithOneNumber.toDouble())
         )
-        val listForBlankString = emptyList<ArithmeticalSymbol>()
+        val listForBlankString = emptyList<ArithmeticalElement>()
         val stringOperationWithSpaces = "3.0 + -8.0 * 1.0 - 5.0 / 3.0 * 5.0 * 99.0 / 51.23333339 * 6563.435453 - -1.0" +
                 " / 21.15 + 545.45 + 546358743.43543244"
-        val listOperationWithSpaces = listOf<ArithmeticalSymbol>(
-            NumberSymbol(3.0),
-            TypeOfOperator.ADDITION,
-            NumberSymbol(-8.00),
-            TypeOfOperator.MULTIPLICATION,
-            NumberSymbol(1.0),
-            TypeOfOperator.SUBTRACTION,
-            NumberSymbol(5.0),
-            TypeOfOperator.DIVISION,
-            NumberSymbol(3.0),
-            TypeOfOperator.MULTIPLICATION,
-            NumberSymbol(5.0),
-            TypeOfOperator.MULTIPLICATION,
-            NumberSymbol(99.0),
-            TypeOfOperator.DIVISION,
-            NumberSymbol(51.23333339),
-            TypeOfOperator.MULTIPLICATION,
-            NumberSymbol(6563.435453),
-            TypeOfOperator.SUBTRACTION,
-            NumberSymbol(-1.0),
-            TypeOfOperator.DIVISION,
-            NumberSymbol(21.15),
-            TypeOfOperator.ADDITION,
-            NumberSymbol(545.45),
-            TypeOfOperator.ADDITION,
-            NumberSymbol(5.463587434354324E8),
+        val listOperationWithSpaces = listOf<ArithmeticalElement>(
+            Operand(3.0),
+            Operator.ADDITION,
+            Operand(-8.00),
+            Operator.MULTIPLICATION,
+            Operand(1.0),
+            Operator.SUBTRACTION,
+            Operand(5.0),
+            Operator.DIVISION,
+            Operand(3.0),
+            Operator.MULTIPLICATION,
+            Operand(5.0),
+            Operator.MULTIPLICATION,
+            Operand(99.0),
+            Operator.DIVISION,
+            Operand(51.23333339),
+            Operator.MULTIPLICATION,
+            Operand(6563.435453),
+            Operator.SUBTRACTION,
+            Operand(-1.0),
+            Operator.DIVISION,
+            Operand(21.15),
+            Operator.ADDITION,
+            Operand(545.45),
+            Operator.ADDITION,
+            Operand(5.463587434354324E8),
         )
         val stringOperationWithIntegersNumbers = "3 + -8 * 1 - 5 / 3 * 5 * 99 / 51 * 6563 - -1" +
                 " / 21 + 545 + 546358743"

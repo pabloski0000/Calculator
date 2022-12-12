@@ -1,4 +1,0 @@
-package mathematicalSymbols
-
-interface ArithmeticalSymbol {
-}

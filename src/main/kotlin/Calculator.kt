@@ -1,25 +1,25 @@
-import mathematicalSymbols.TypeOfOperator
-import mathematicalSymbols.NumberSymbol
-import mathematicalSymbols.ArithmeticalSymbol
+import mathematicalSymbols.Operator
+import mathematicalSymbols.Operand
+import mathematicalSymbols.ArithmeticalElement
 import java.lang.RuntimeException
 
 class Calculator {
-    fun calculate(operation: List<ArithmeticalSymbol>): List<ArithmeticalSymbol>{
-        val operationElements: MutableList<ArithmeticalSymbol> = operation.toMutableList()
-        var firstOperand: NumberSymbol = NumberSymbol(.0)
-        var secondOperand: NumberSymbol
+    fun calculate(operation: List<ArithmeticalElement>): List<ArithmeticalElement>{
+        val operationElements: MutableList<ArithmeticalElement> = operation.toMutableList()
+        var firstOperand: Operand = Operand(.0)
+        var secondOperand: Operand
         var whileCursor = 1
         while (whileCursor < operationElements.size){
-            firstOperand = operationElements[whileCursor - 1] as NumberSymbol
-            secondOperand = operationElements[whileCursor + 1] as NumberSymbol
+            firstOperand = operationElements[whileCursor - 1] as Operand
+            secondOperand = operationElements[whileCursor + 1] as Operand
             var multiplicationOrDivisionDone = false
             multiplicationOrDivisionDone = when(operationElements[whileCursor]){
-                TypeOfOperator.MULTIPLICATION -> {
-                    firstOperand = NumberSymbol(firstOperand.toDouble() * secondOperand.toDouble())
+                Operator.MULTIPLICATION -> {
+                    firstOperand = Operand(firstOperand.toDouble() * secondOperand.toDouble())
                     true
                 }
-                TypeOfOperator.DIVISION -> {
-                    firstOperand = NumberSymbol(firstOperand.toDouble() / secondOperand.toDouble())
+                Operator.DIVISION -> {
+                    firstOperand = Operand(firstOperand.toDouble() / secondOperand.toDouble())
                     true
                 }
                 else -> false
@@ -34,15 +34,15 @@ class Calculator {
         }
         for (index in 1 until operationElements.size step 2){
             if(index == 1)
-                firstOperand = operationElements[index - 1] as NumberSymbol
-            secondOperand = operationElements[index + 1] as NumberSymbol
+                firstOperand = operationElements[index - 1] as Operand
+            secondOperand = operationElements[index + 1] as Operand
             firstOperand = when(operationElements[index]){
-                TypeOfOperator.ADDITION -> NumberSymbol(firstOperand.toDouble() + secondOperand.toDouble())
-                TypeOfOperator.SUBTRACTION -> NumberSymbol(firstOperand.toDouble() - secondOperand.toDouble())
+                Operator.ADDITION -> Operand(firstOperand.toDouble() + secondOperand.toDouble())
+                Operator.SUBTRACTION -> Operand(firstOperand.toDouble() - secondOperand.toDouble())
                 else -> throw RuntimeException("Unrecognised opertor symbol")
             }
         }
-        return listOf<ArithmeticalSymbol>(
+        return listOf<ArithmeticalElement>(
             firstOperand
         )
     }
