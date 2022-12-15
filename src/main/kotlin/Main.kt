@@ -4,10 +4,11 @@ fun main(args: Array<String>) {
     // Try adding program arguments via Run/Debug configuration.
     // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
     val console: Console = System.console()
+    val calculator = Calculator()
     val operationAdapter = OperationAsStringAdapter()
     do {
         val operation = console.readLine("Print your operation then press enter\n")
-        val result = operationAdapter.calculateStringOperation(operation)
+        val result = calculator.calculate(operationAdapter.adaptOperation(operation))
         val resultPresented: String = if(result.toDouble() % 1 == 0.0)
             result.toInt().toString()
         else

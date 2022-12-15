@@ -1,49 +1,34 @@
 
 import mathematicalSymbols.ArithmeticalElement
-import mathematicalSymbols.Operand
 import mathematicalSymbols.OperatorSymbol
-import java.util.*
+import mathematicalSymbols.RationalNumber
 
 class OperationAsStringAdapter {
     private val additionSymbol = "+"
     private val subtractionSymbol = "-"
     private val multiplicationSymbol = "*"
     private val divisionSymbol = "/"
-    fun calculateStringOperation(operation: String): Double {
-        if(operation.isBlank())
-            throw RuntimeException("The operation at least has to contain one operand")
-        val operationList: List<ArithmeticalElement> = adaptOperation(operation)
-        val operationListCalculated: List<ArithmeticalElement> = Calculator().calculate(operationList)
-        val result = operationListCalculated[0] as Operand
-        return result.toDouble()
-    }
 
     fun adaptOperation(operation: String): List<ArithmeticalElement>{
-        val operationSplit = splitStringOperationIntoOperandsAndOperators(operation)
+        val operationSplit = splitOperationIntoOperandsAndOperators(operation)
         val adaptedOperation = adaptOperandsAndOperators(operationSplit)
         return adaptedOperation
     }
 
-    fun splitStringOperationIntoOperandsAndOperators(operation: String): Array<String>{
-        val operationWithoutSpaces = operation.replace(" ", "")
-        val allOperators = additionSymbol + subtractionSymbol + multiplicationSymbol + divisionSymbol
-        val tokenizer = StringTokenizer(operationWithoutSpaces, allOperators, true)
+    fun splitOperationIntoOperandsAndOperators(operation: String): Array<String>{
+        val tokenizer = getOperationTokenizer(operation)
         val operandsAndOperatorsSplit: MutableList<String> = mutableListOf()
-        val firstOperand = StringBuilder(tokenizer.nextToken())
-        if (firstOperand.toString() in allOperators){
-            firstOperand.append(tokenizer.nextToken())
-        }
-        operandsAndOperatorsSplit.add(firstOperand.toString())
-        while (tokenizer.hasMoreTokens()){
-            val operator = tokenizer.nextToken()
-            operandsAndOperatorsSplit.add(operator)
-            val operand = StringBuilder(tokenizer.nextToken())
-            if(operand.toString() in allOperators){
-                operand.append(tokenizer.nextToken())
-            }
-            operandsAndOperatorsSplit.add(operand.toString())
+        val firstOperand = tokenizer.nextOperand()
+        operandsAndOperatorsSplit.add(firstOperand)
+        while (tokenizer.hasNext()){
+            operandsAndOperatorsSplit.add(tokenizer.nextOperator())
+            operandsAndOperatorsSplit.add(tokenizer.nextOperand())
         }
         return operandsAndOperatorsSplit.toTypedArray()
+    }
+
+    private fun getOperationTokenizer(operation: String): OperationTokenizer{
+        return OperationTokenizer(operation)
     }
 
     fun adaptOperandsAndOperators(operation: Array<String>): List<ArithmeticalElement>{
@@ -62,7 +47,7 @@ class OperationAsStringAdapter {
         return adaptedOperation
     }
 
-    private fun adaptOperand(operand: String) = Operand(operand.toDouble())
+    private fun adaptOperand(operand: String) = RationalNumber(operand.toDouble())
 
     private fun adaptOperator(operator: String): OperatorSymbol{
         return when(operator){
@@ -73,5 +58,6 @@ class OperationAsStringAdapter {
             else -> throw RuntimeException("Type of operator not recognised")
         }
     }
+
 }
 

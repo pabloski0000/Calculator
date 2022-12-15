@@ -1,6 +1,6 @@
 package mathematicalSymbols
 
-class Operand(
+class RationalNumber(
     private val value: Number
 ): ArithmeticalElement {
     fun toDouble(): Double{
@@ -11,7 +11,7 @@ class Operand(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Operand
+        other as RationalNumber
 
         if (value != other.value) return false
 

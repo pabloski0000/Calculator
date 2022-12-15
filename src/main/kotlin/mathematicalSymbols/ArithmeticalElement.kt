@@ -1,4 +1,5 @@
 package mathematicalSymbols
 
 interface ArithmeticalElement {
+
 }
