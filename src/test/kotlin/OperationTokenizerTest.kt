@@ -10,12 +10,12 @@ class OperationTokenizerTest {
         val expectedErrorMessage = "You must pass an operation with at least one operand"
 
         try {
-            OperationTokenizer(emptyOperation)
+            OperationTokenizer(emptyOperation, "+-*/")
         }catch (e: RuntimeException){
             assertEquals(expectedErrorMessage, e.message)
         }
         try {
-            OperationTokenizer(blankOperation)
+            OperationTokenizer(blankOperation, "+-*/")
         }catch (e: RuntimeException){
             assertEquals(expectedErrorMessage, e.message)
         }
@@ -23,7 +23,7 @@ class OperationTokenizerTest {
     @Test
     fun getNextOperandWhenItIsNegative(){
         val oneNegativeOperand = "-1"
-        val toTest = OperationTokenizer(oneNegativeOperand)
+        val toTest = OperationTokenizer(oneNegativeOperand, "+-*/")
 
         assertEquals(oneNegativeOperand, toTest.nextOperand())
     }
@@ -33,7 +33,7 @@ class OperationTokenizerTest {
         val expectedTokensInOrder = arrayOf(
             "3","+","4","*","8","/","3","-","-3","+","8","*","3.3","-","-2.35"
         )
-        val toTest = OperationTokenizer(operation)
+        val toTest = OperationTokenizer(operation, "+-*/")
 
         var cursor = 0
         assertEquals(expectedTokensInOrder[cursor], toTest.nextOperand())

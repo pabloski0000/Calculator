@@ -28,7 +28,11 @@ class OperationAsStringAdapter {
     }
 
     private fun getOperationTokenizer(operation: String): OperationTokenizer{
-        return OperationTokenizer(operation)
+        val operatorSymbols = StringBuilder(additionSymbol)
+            .append(subtractionSymbol)
+            .append(multiplicationSymbol)
+            .append(divisionSymbol)
+        return OperationTokenizer(operation, operatorSymbols.toString())
     }
 
     fun adaptOperandsAndOperators(operation: Array<String>): List<ArithmeticalElement>{

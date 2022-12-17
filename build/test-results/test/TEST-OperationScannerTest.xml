@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="OperationScannerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-12T19:39:05" hostname="DESKTOP-7R5O05B" time="0.031">
-  <properties/>
-  <testcase name="getOperandsAndOperatorsCorrectly()" classname="OperationScannerTest" time="0.031"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

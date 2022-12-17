@@ -2,9 +2,9 @@
 import java.util.*
 
 class OperationTokenizer(
-    private val operation: String
+    private val operation: String,
+    private val operatorSymbols: String
 ) {
-    private val operatorSymbols: String = "+-*/"
     private val tokenizer = StringTokenizer(removeSpacesFromOperation(operation), operatorSymbols, true)
     private val operands = mutableListOf<String>()
     private val operators = mutableListOf<String>()
