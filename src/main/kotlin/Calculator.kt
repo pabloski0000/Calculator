@@ -1,49 +1,96 @@
-import mathematicalSymbols.TypeOfOperator
-import mathematicalSymbols.NumberSymbol
-import mathematicalSymbols.ArithmeticalSymbol
-import java.lang.RuntimeException
 
+import mathematicalSymbols.ArithmeticalElement
+import mathematicalSymbols.OperatorSymbol
+import mathematicalSymbols.RationalNumber
 class Calculator {
-    fun calculate(operation: List<ArithmeticalSymbol>): List<ArithmeticalSymbol>{
-        val operationElements: MutableList<ArithmeticalSymbol> = operation.toMutableList()
-        var firstOperand: NumberSymbol = NumberSymbol(.0)
-        var secondOperand: NumberSymbol
-        var whileCursor = 1
-        while (whileCursor < operationElements.size){
-            firstOperand = operationElements[whileCursor - 1] as NumberSymbol
-            secondOperand = operationElements[whileCursor + 1] as NumberSymbol
-            var multiplicationOrDivisionDone = false
-            multiplicationOrDivisionDone = when(operationElements[whileCursor]){
-                TypeOfOperator.MULTIPLICATION -> {
-                    firstOperand = NumberSymbol(firstOperand.toDouble() * secondOperand.toDouble())
-                    true
+    fun calculate(operation: List<ArithmeticalElement>): Double{
+        if(operation.isEmpty())
+            return .0
+        if(isOperationSizeEqualsOne(operation)){
+            return getFirstOperand(operation)
+        }
+        return performMultiplicationsAndDivisionsFirstAndThenAdditionsAndSubtractions(operation.toMutableList())
+    }
+
+    private fun isOperationSizeEqualsOne(operation: List<ArithmeticalElement>): Boolean{
+        return operation.size == 1
+    }
+
+    private fun getFirstOperand(operation: List<ArithmeticalElement>): Double{
+        return adaptToRationalNumber(operation[0]).toDouble()
+    }
+
+    private fun performMultiplicationsAndDivisionsFirstAndThenAdditionsAndSubtractions(operation: MutableList<ArithmeticalElement>): Double{
+        val operationWithoutMultiplicationNorDivisions = performMultiplicationsAndDivisions(operation)
+        val result = performAdditionsAndSubtractions(operationWithoutMultiplicationNorDivisions)
+        return result.toDouble()
+    }
+
+    private fun performMultiplicationsAndDivisions(operation: List<ArithmeticalElement>): List<ArithmeticalElement>{
+        var operationToOperateOn = operation.toMutableList()
+        var cursor = 1
+        while (cursor < operationToOperateOn.size){
+            val operatorPosition = cursor
+            when(operationToOperateOn[cursor]){
+                OperatorSymbol.MULTIPLICATION -> {
+                    operationToOperateOn = performMultiplicaionOnList(operationToOperateOn, operatorPosition)
                 }
-                TypeOfOperator.DIVISION -> {
-                    firstOperand = NumberSymbol(firstOperand.toDouble() / secondOperand.toDouble())
-                    true
+                OperatorSymbol.DIVISION -> {
+                    operationToOperateOn = performDivisionOnList(operationToOperateOn, operatorPosition)
                 }
-                else -> false
-            }
-            if (multiplicationOrDivisionDone){
-                operationElements[whileCursor - 1] = firstOperand
-                operationElements.removeAt(whileCursor)
-                operationElements.removeAt(whileCursor)
-            }else{
-                whileCursor += 2
+                else -> cursor += 2
             }
         }
-        for (index in 1 until operationElements.size step 2){
+        return operationToOperateOn
+    }
+
+    private fun performMultiplicaionOnList(operation: MutableList<ArithmeticalElement>, operatorPosition: Int): MutableList<ArithmeticalElement>{
+        val firstOperandPosition = operatorPosition - 1
+        val secondOperandPosition = operatorPosition + 1
+        val firstOperand = adaptToRationalNumber(operation[firstOperandPosition]).toDouble()
+        val secondOperand = adaptToRationalNumber(operation[secondOperandPosition]).toDouble()
+        val result = multiplicate(firstOperand, secondOperand)
+        operation[firstOperandPosition] = adaptToRationalNumber(result)
+        operation.removeAt(secondOperandPosition)
+        operation.removeAt(operatorPosition)
+        return operation
+    }
+    fun multiplicate(multiplier: Double, multiplicand: Double) = multiplier * multiplicand
+
+    private fun performDivisionOnList(operation: MutableList<ArithmeticalElement>, operatorPosition: Int): MutableList<ArithmeticalElement>{
+        val firstOperandPosition = operatorPosition - 1
+        val secondOperandPosition = operatorPosition + 1
+        val firstOperand = adaptToRationalNumber(operation[firstOperandPosition]).toDouble()
+        val secondOperand = adaptToRationalNumber(operation[secondOperandPosition]).toDouble()
+        val result = divide(firstOperand, secondOperand)
+        operation[firstOperandPosition] = adaptToRationalNumber(result)
+        operation.removeAt(secondOperandPosition)
+        operation.removeAt(operatorPosition)
+        return operation
+    }
+    fun divide(dividend: Double, divisor: Double) = dividend / divisor
+
+    private fun performAdditionsAndSubtractions(operations: List<ArithmeticalElement>): RationalNumber{
+        var firstOperand: RationalNumber = RationalNumber(.0)
+        var secondOperand: RationalNumber
+        for (index in 1 until operations.size step 2){
             if(index == 1)
-                firstOperand = operationElements[index - 1] as NumberSymbol
-            secondOperand = operationElements[index + 1] as NumberSymbol
-            firstOperand = when(operationElements[index]){
-                TypeOfOperator.ADDITION -> NumberSymbol(firstOperand.toDouble() + secondOperand.toDouble())
-                TypeOfOperator.SUBTRACTION -> NumberSymbol(firstOperand.toDouble() - secondOperand.toDouble())
+                firstOperand = adaptToRationalNumber(operations[index - 1])
+            secondOperand = adaptToRationalNumber(operations[index + 1])
+            firstOperand = when(operations[index]){
+                OperatorSymbol.ADDITION -> RationalNumber(firstOperand.toDouble() + secondOperand.toDouble())
+                OperatorSymbol.SUBTRACTION -> RationalNumber(firstOperand.toDouble() - secondOperand.toDouble())
                 else -> throw RuntimeException("Unrecognised opertor symbol")
             }
         }
-        return listOf<ArithmeticalSymbol>(
-            firstOperand
-        )
+        return firstOperand
+    }
+
+    private fun adaptToRationalNumber(arithmeticalElement: ArithmeticalElement): RationalNumber{
+        return arithmeticalElement as RationalNumber
+    }
+
+    private fun adaptToRationalNumber(operand: Double): RationalNumber{
+        return RationalNumber(operand)
     }
 }

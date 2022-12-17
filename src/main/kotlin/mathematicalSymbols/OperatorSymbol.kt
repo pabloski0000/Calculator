@@ -1,9 +1,8 @@
 package mathematicalSymbols
 
-enum class TypeOfOperator: ArithmeticalSymbol {
+enum class OperatorSymbol: ArithmeticalElement {
     ADDITION,
     SUBTRACTION,
     MULTIPLICATION,
     DIVISION;
-
 }
