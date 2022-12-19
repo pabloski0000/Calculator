@@ -33,8 +33,21 @@ class CalculatorTest{
 
         assertEquals(expectedResult, toTest(inputWithOnlyOneOperand))
     }
+
     @Test
-    fun firstAdditionHasBeenDoneCorrectly(){
+    fun divideIntegerNumbers(){
+        val toTest = classToTest::calculate
+        val divisionOfIntegers = listOf<ArithmeticalElement>(
+            RationalNumber(128),
+            OperatorSymbol.DIVISION,
+            RationalNumber(8),
+        )
+        val expectedResult = 16.0
+
+        assertEquals(expectedResult, toTest(divisionOfIntegers))
+    }
+    @Test
+    fun testComplexCalculation(){
         val toTest = classToTest::calculate
         val inputList = listOf<ArithmeticalElement>(
             RationalNumber(3.0),

@@ -71,11 +71,9 @@ class Calculator {
     fun divide(dividend: Double, divisor: Double) = dividend / divisor
 
     private fun performAdditionsAndSubtractions(operations: List<ArithmeticalElement>): RationalNumber{
-        var firstOperand: RationalNumber = RationalNumber(.0)
+        var firstOperand: RationalNumber = adaptToRationalNumber(operations[0])
         var secondOperand: RationalNumber
         for (index in 1 until operations.size step 2){
-            if(index == 1)
-                firstOperand = adaptToRationalNumber(operations[index - 1])
             secondOperand = adaptToRationalNumber(operations[index + 1])
             firstOperand = when(operations[index]){
                 OperatorSymbol.ADDITION -> RationalNumber(firstOperand.toDouble() + secondOperand.toDouble())
